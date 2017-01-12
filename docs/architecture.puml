@@ -1,0 +1,14 @@
+@startuml
+:Provider;
+->provides current route information and actions to mutate it;
+
+:Router|
+->groups **Routes** and exposes current route and actions from provider;
+
+:Route|
+
+note right
+renders a component or invokes a callback
+end note
+
+@enduml

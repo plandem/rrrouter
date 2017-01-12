@@ -1,0 +1,15 @@
+@startuml
+:Provider;
+->provides current route information and actions to mutate it;
+
+:Router|
+->groups **Routes** and exposes current route and actions from provider;
+
+while(match current route against **Route**?) is(is matched?)
+:Match;
+:do something/
+endwhile (no matches);
+:Miss;
+
+@enduml
+

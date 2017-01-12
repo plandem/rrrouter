@@ -1,0 +1,53 @@
+{
+  "name": "rrrouter",
+  "version": "1.1.0",
+  "description": "React based router - simple, yet powerful router for React",
+  "main": "lib/index.js",
+  "jsnext:main": "src/index.js",
+  "scripts": {
+    "build": "babel src --out-dir lib --presets es2015,stage-0,react --plugin lodash",
+    "clean": "rimraf lib",
+    "pub": "npm run clean && npm run build && npm version patch && npm publish && rm -rf lib && git push origin"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/plandem/rrrouter.git"
+  },
+  "keywords": [
+    "react",
+    "router",
+    "routing",
+    "history",
+    "navigation",
+    "simple",
+    "powerful"
+  ],
+  "author": "Andrey Gayvoronsky <plandem@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/plandem/rrrouter/issues"
+  },
+  "homepage": "https://github.com/plandem/rrrouter#readme",
+  "files": [
+    "lib",
+    "src",
+    "test"
+  ],
+  "dependencies": {
+    "invariant": "2.x",
+    "lodash": "4.x",
+    "rrrouter-history": "1.x",
+    "url-pattern": "1.0.x"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-plugin-lodash": "^3.2.11",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "rimraf": "^2.5.4"
+  },
+  "peerDependencies": {
+    "react": "15.x"
+  }
+}
