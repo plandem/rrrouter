@@ -36,7 +36,6 @@
   "dependencies": {
     "invariant": "2.x",
     "lodash": "4.x",
-    "rrrouter-history": "1.x",
     "url-pattern": "1.0.x"
   },
   "devDependencies": {

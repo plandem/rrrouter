@@ -20,5 +20,5 @@ export {
 	withRouter,
 };
 
-export * from 'rrrouter-history';
+export * as RouterProps from './prop-types';
 export Provider from './provider';
