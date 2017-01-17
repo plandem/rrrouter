@@ -41,6 +41,7 @@ export const providerSubPropTypes = {
 	subscribe: PropTypes.func.isRequired,
 	unsubscribe: PropTypes.func.isRequired,
 	notify: PropTypes.func.isRequired,
+	createPathMatcher: PropTypes.func.isRequired,
 };
 
 export const routerSubPropTypes = {

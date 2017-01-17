@@ -4,7 +4,6 @@ import memoize from 'lodash/memoize';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import uniqueId from 'lodash/uniqueId';
-import UrlPattern from 'url-pattern';
 import { routerSubPropTypes, routerPropTypes, routerPropName, routerSubPropName, providerPropName, providerSubPropName, providerPropTypes, providerSubPropTypes, locationPropName } from './prop-types';
 
 //[url-pattern] key for wildcards in matches
@@ -35,7 +34,6 @@ class Router extends React.Component {
 
 		this.prefix = prefix || '';
 		this.listeners = new Map();
-		this.$$createPathMatcher = memoize(this.$$createPathMatcher);
 		this.$$matchPath = memoize(this.$$matchPath);
 	}
 
@@ -79,13 +77,9 @@ class Router extends React.Component {
 		return <div {...props}>{this.props.children}</div>;
 	}
 
-	$$createPathMatcher = (path, options) => {
-		return new UrlPattern(path, options);
-	};
-
 	$$createRoute = (callback, { path, options }) => {
 		//NB: always create a matcher for absolute path
-		return path ? { path, options, matcher: this.$$createPathMatcher(this.prefix + (!this.props.relative || path !== '/' ? path : ''), options), callback } : { callback };
+		return path ? { path, options, matcher: this.context[providerSubPropName].createPathMatcher(this.prefix + (!this.props.relative || path !== '/' ? path : ''), options), callback } : { callback };
 	};
 
 	$$matchPath = (path) => {
@@ -131,7 +125,7 @@ class Router extends React.Component {
 			path = this.prefix + path;
 		}
 
-		return this.$$createPathMatcher(path).stringify(params);
+		return this.context[providerSubPropName].createPathMatcher(path).stringify(params);
 	};
 
 	/**
@@ -152,7 +146,7 @@ class Router extends React.Component {
 	 * @param options
 	 */
 	testHref = (path, href, options) => {
-		return this.$$createPathMatcher(path, options).match(href);
+		return this.context[providerSubPropName].createPathMatcher(path, options).match(href);
 	};
 
 	/**
