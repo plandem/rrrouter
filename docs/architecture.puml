@@ -18,20 +18,20 @@ usecase RouteC1
 usecase RouteC2
 usecase RouteC3
 
-Provider -- RouterA
-Provider -- RouterB
-Provider -- RouterC
+Provider <--> RouterA
+Provider <--> RouterB
+Provider <--> RouterC
 
-RouterA -- RouteA1
-RouterA -- RouteA2
-RouterA -- RouteA3
+RouterA --> RouteA1
+RouterA --> RouteA2
+RouterA --> RouteA3
 
-RouterB -- RouteB1
-RouterB -- RouteB2
-RouterB -- RouteB3
+RouterB --> RouteB1
+RouterB --> RouteB2
+RouterB --> RouteB3
 
-RouterC -- RouteC1
-RouterC -- RouteC2
-RouterC -- RouteC3
+RouterC --> RouteC1
+RouterC --> RouteC2
+RouterC --> RouteC3
 
 @enduml

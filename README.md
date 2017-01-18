@@ -30,7 +30,11 @@ _But let's start from beginning..._
 #Architecture
 ![Architecture](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/plandem/rrrouter/master/docs/architecture.puml)
 
-As you can see: there can have only one Provider with many Routers that can have many Routes. But let's describe purpose of each component.
+As you can see:
+
+there can have only one Provider with many Routers that can have many Routes.
+
+But let's describe purpose of each component.
 
 | Component      | Description              |
 |----------------|--------------------------|
