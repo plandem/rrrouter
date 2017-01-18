@@ -28,11 +28,14 @@ To learn rrrouter you must know only 3 things:
 _But let's start from beginning..._
 
 #Architecture
-TODO
+![Architecture](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/plandem/rrrouter/master/docs/architecture.puml)
 
-#Usage
-[Example](https://github.com/plandem/rrrouter-example)
+As you can see: there can have only one Provider with many Routers that can have many Routes. But let's describe purpose of each component.
 
-
+| Component      | Description              |
+|----------------|--------------------------|
+| Provider       | Provides current route information and actions to mutate it. Will notify each Router about changes of current route. Only Routers works directly with Provider. |
+| Router         | Groups **Routes** and exposes current route and actions from Provider. Will notify each Route(if condition met) about changes. Any component that wants to get information about current route or mutate it, must use Router for it. |
+| Route          | Renders a component or invokes a callback if condition met. |
 
 

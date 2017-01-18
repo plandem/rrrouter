@@ -1,14 +1,37 @@
 @startuml
-:Provider;
-->provides current route information and actions to mutate it;
 
-:Router|
-->groups **Routes** and exposes current route and actions from provider;
+database Provider
 
-:Route|
+agent RouterA
+agent RouterB
+agent RouterC
 
-note right
-renders a component or invokes a callback
-end note
+usecase RouteA1
+usecase RouteA2
+usecase RouteA3
+
+usecase RouteB1
+usecase RouteB2
+usecase RouteB3
+
+usecase RouteC1
+usecase RouteC2
+usecase RouteC3
+
+Provider -- RouterA
+Provider -- RouterB
+Provider -- RouterC
+
+RouterA -- RouteA1
+RouterA -- RouteA2
+RouterA -- RouteA3
+
+RouterB -- RouteB1
+RouterB -- RouteB2
+RouterB -- RouteB3
+
+RouterC -- RouteC1
+RouterC -- RouteC2
+RouterC -- RouteC3
 
 @enduml
