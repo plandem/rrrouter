@@ -43,3 +43,9 @@ But let's describe purpose of each component.
 | Route          | Renders a component or invokes a callback if condition met. |
 
 
+#TODO:
+- documentation
+- examples
+- tests
+
+
