@@ -18,7 +18,7 @@ Let's start with React - from official documentation:
 >We value API stability.
 
 #So why?
-It's true that there are already dozen routers for React. It's sad, but there is not any implementation that respects **React way**: non-bloated, easy to extend, simple yet powerful, stable api.
+It's true that there are already dozen routers for React. It's sad, but there is no any implementation that respects **React way**: non-bloated, easy to extend, simple yet powerful, stable api.
 
 To learn rrrouter you must know only 3 things:
 - Provider
@@ -31,15 +31,16 @@ _But let's start from beginning..._
 ![Architecture](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/plandem/rrrouter/master/docs/architecture.puml)
 
 As you can see:
-
-there can have only one Provider with many Routers that can have many Routes.
+- There can be only one Provider with many Routers
+- Each Router can have multiply Routes
 
 But let's describe purpose of each component.
 
 | Component      | Description              |
 |----------------|--------------------------|
-| Provider       | Provides current route information and actions to mutate it. Will notify each Router about changes of current route. Only Routers works directly with Provider. |
-| Router         | Groups **Routes** and exposes current route and actions from Provider. Will notify each Route(if condition met) about changes. Any component that wants to get information about current route or mutate it, must use Router for it. |
+| Provider       | Provides current route information and actions to mutate it. Will notify each Router about changes of current route. Only Routers work directly with Provider. |
+| Router         | Groups **Routes**, provides methods for matching/testing hrefs, exposes current route and actions from Provider. Will notify each Route(if condition met) about changes. Any component that wants to get information about current route or mutate it, must use Router for it. |
 | Route          | Renders a component or invokes a callback if condition met. |
 
-
+#API
+_TODO_

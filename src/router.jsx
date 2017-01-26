@@ -82,12 +82,15 @@ class Router extends React.Component {
 		return path ? { path, options, matcher: this.context[providerSubPropName].createPathMatcher(this.prefix + (!this.props.relative || path !== '/' ? path : ''), options), callback } : { callback };
 	};
 
+	$$resetMatches = () => {
+		this.$$matchPath.cache.clear();
+	};
+
 	$$matchPath = (path) => {
 		//cache matching for one path only to prevent memory leaks for parent routers
-		this.$$matchPath.cache.clear();
+		this.$$resetMatches();
 
 		const matches = new Map();
-
 		if(path) {
 			this.listeners.forEach((r, id) => {
 				if(r.matcher) {
@@ -157,6 +160,9 @@ class Router extends React.Component {
 	subscribe = (props, callback) => {
 		const id = uniqueId('router-listener');
 		this.listeners.set(id, this.$$createRoute(callback, props));
+		this.$$resetMatches();
+		this.notify(null ,id);
+
 		return id;
 	};
 
@@ -169,7 +175,8 @@ class Router extends React.Component {
 		const route = this.listeners.get(id);
 		if(route) {
 			this.listeners.set(id, this.$$createRoute(route.callback, props));
-			this.notify();
+			this.$$resetMatches();
+			this.notify(null, id);
 		}
 	};
 
@@ -179,6 +186,7 @@ class Router extends React.Component {
 	 */
 	unsubscribe = (id) => {
 		if(this.listeners.delete(id)) {
+			this.$$resetMatches();
 			this.notify();
 		}
 	};
@@ -186,8 +194,9 @@ class Router extends React.Component {
 	/**
 	 * notify subscribed routes about route change
 	 * @param route
+	 * @param route_id
 	 */
-	notify = (route) => {
+	notify = (route, route_id) => {
 		if(!route) {
 			route = this.context[providerPropName][locationPropName];
 		}
@@ -199,7 +208,9 @@ class Router extends React.Component {
 			const matched = matches.get(id);
 
 			if(matched) {
-				r.callback(matched);
+				if(!route_id || route_id === id) {
+					r.callback(matched);
+				}
 			} else {
 				(r.matcher) ? r.callback(null) : r.callback(!matches.size || null);
 			}

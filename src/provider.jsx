@@ -42,6 +42,8 @@ class Provider extends React.Component {
 	subscribe = (callback) => {
 		const id = uniqueId('provider-listener');
 		this.listeners.set(id, callback);
+		
+		//TODO: notify new router
 		return id;
 	};
 
