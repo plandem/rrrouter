@@ -1,0 +1,9 @@
+@startuml
+
+actor User
+usecase Router
+
+database Provider
+
+
+@enduml
