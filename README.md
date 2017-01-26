@@ -42,5 +42,7 @@ But let's describe purpose of each component.
 | Router         | Groups **Routes**, provides methods for matching/testing hrefs, exposes current route and actions from Provider. Will notify each Route(if condition met) about changes. Any component that wants to get information about current route or mutate it, must use Router for it. |
 | Route          | Renders a component or invokes a callback if condition met. |
 
-#API
-_TODO_
+#TODO:
+- documentation
+- examples
+- tests
