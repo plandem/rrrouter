@@ -29,6 +29,9 @@ class Router extends React.Component {
 
 				const unmatchedPath = parentRoute.params && parentRoute.params[wildcardKey] ? parentRoute.params[wildcardKey][0] : null;
 				prefix = unmatchedPath ? currentPath.substring(0, currentPath.length - unmatchedPath.length) : currentPath;
+				if(prefix[prefix.length - 1] === '/') {
+					prefix = prefix.slice(0, -1);
+				}
 			}
 		}
 
