@@ -3,7 +3,7 @@ import pick from 'lodash/pick';
 import uniqueId from 'lodash/uniqueId';
 import { providerPropTypes, providerSubPropTypes, providerPropName, providerSubPropName, locationPropName } from './prop-types';
 import memoize from 'lodash/memoize';
-import UrlPattern from 'url-pattern';
+import Path from './path';
 
 const MATCHER_CACHE_SIZE = 1000;
 
@@ -11,7 +11,9 @@ class Provider extends React.Component {
 	constructor(props) {
 		super(props);
 		this.listeners = new Map();
-		this.createPathMatcher = memoize(this.createPathMatcher, (path, options) => (path + JSON.stringify(options)));
+
+		this.serializeOptions = memoize(this.serializeOptions);
+		this.createPathMatcher = memoize(this.createPathMatcher, (path, options) => (path + this.serializeOptions(options)));
 	}
 
 	componentDidMount() {
@@ -51,12 +53,20 @@ class Provider extends React.Component {
 		this.listeners.delete(id);
 	};
 
+	serializeOptions = (options) => {
+		if(this.serializeOptions.cache.size > MATCHER_CACHE_SIZE) {
+			this.serializeOptions.cache.clear();
+		}
+
+		return JSON.stringify(options);
+	};
+
 	createPathMatcher = (path, options) => {
 		if(this.createPathMatcher.cache.size > MATCHER_CACHE_SIZE) {
 			this.createPathMatcher.cache.clear();
 		}
 
-		return new UrlPattern(path, options);
+		return new Path(path, options || this.props.matcherOptions);
 	};
 
 	getChildContext() {
@@ -81,6 +91,7 @@ class Provider extends React.Component {
 Provider.propTypes = {
 	initHref: PropTypes.string, //local property, because we don't want to expose this property to router.
 	children: PropTypes.element.isRequired,
+	matcherOptions: PropTypes.object,
 	...providerPropTypes,
 };
 

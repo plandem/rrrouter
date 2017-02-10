@@ -22,3 +22,4 @@ export {
 
 export * as RouterProps from './prop-types';
 export Provider from './provider';
+export Path from './path';

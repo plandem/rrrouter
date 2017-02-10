@@ -37,7 +37,7 @@
   "dependencies": {
     "invariant": "2.x",
     "lodash": "4.x",
-    "url-pattern": "1.0.x"
+    "path-to-regexp": "1.7.x"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

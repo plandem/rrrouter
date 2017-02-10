@@ -6,9 +6,6 @@ import pick from 'lodash/pick';
 import uniqueId from 'lodash/uniqueId';
 import { routerSubPropTypes, routerPropTypes, routerPropName, routerSubPropName, providerPropName, providerSubPropName, providerPropTypes, providerSubPropTypes, locationPropName } from './prop-types';
 
-//[url-pattern] key for wildcards in matches
-const wildcardKey = '_';
-
 class Router extends React.Component {
 	constructor(props, context) {
 		super(props, context);
@@ -27,8 +24,8 @@ class Router extends React.Component {
 				//TODO: think more about that checking - actually, there is no any case when it can be possible.
 				invariant(parentRoute, 'Unhandled issue - parent of relative router has no any matches for current route.');
 
-				const unmatchedPath = parentRoute.params && parentRoute.params[wildcardKey] ? parentRoute.params[wildcardKey][0] : null;
-				prefix = unmatchedPath ? currentPath.substring(0, currentPath.length - unmatchedPath.length) : currentPath;
+				const wildcard = parentRoute.path.indexOf('*');
+				prefix = wildcard ? currentPath.substring(0, wildcard) : currentPath;
 				if(prefix[prefix.length - 1] === '/') {
 					prefix = prefix.slice(0, -1);
 				}
@@ -82,7 +79,7 @@ class Router extends React.Component {
 
 	$$createRoute = (callback, { path, options }) => {
 		//NB: always create a matcher for absolute path
-		return path ? { path, options, matcher: this.context[providerSubPropName].createPathMatcher(this.prefix + (!this.props.relative || path !== '/' ? path : ''), options), callback } : { callback };
+		return path ? { path, options, matcher: this.context[providerSubPropName].createPathMatcher(this.prefix + (!this.props.relative || path !== '/' ? path : ''), options || this.props.matcherOptions), callback } : { callback };
 	};
 
 	$$resetMatches = () => {
@@ -97,20 +94,9 @@ class Router extends React.Component {
 		if(path) {
 			this.listeners.forEach((r, id) => {
 				if(r.matcher) {
-					let match = r.matcher.match(path);
-
-					//[url-pattern] RegExp in path doesn't return wildcards information
-					if (match && r.path instanceof RegExp && !match[wildcardKey] && Array.isArray(match)) {
-						match = {[wildcardKey]: match};
-					}
-
-					//[url-pattern] normalize wildcards as array
-					if (match && match[wildcardKey] && !Array.isArray(match[wildcardKey])) {
-						match[wildcardKey] = [match[wildcardKey]];
-					}
-
-					if (match) {
-						matches.set(id, { path: r.path, params: match });
+					const params = r.matcher.match(path);
+					if (params) {
+						matches.set(id, { path: r.path, params });
 					}
 				}
 			});
@@ -131,7 +117,7 @@ class Router extends React.Component {
 			path = this.prefix + path;
 		}
 
-		return this.context[providerSubPropName].createPathMatcher(path).stringify(params);
+		return this.context[providerSubPropName].createPathMatcher(path, this.props.matcherOptions).build(params);
 	};
 
 	/**
@@ -152,7 +138,7 @@ class Router extends React.Component {
 	 * @param options
 	 */
 	testHref = (path, href, options) => {
-		return this.context[providerSubPropName].createPathMatcher(path, options).match(href);
+		return this.context[providerSubPropName].createPathMatcher(path, options || this.props.matcherOptions).match(href);
 	};
 
 	/**
@@ -224,6 +210,7 @@ class Router extends React.Component {
 Router.propTypes = {
 	relative: PropTypes.bool,
 	children: PropTypes.any.isRequired,
+	matcherOptions: PropTypes.object,
 };
 
 Router.defaultProps = {
