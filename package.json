@@ -1,6 +1,6 @@
 {
   "name": "rrrouter",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "React based router - simple, yet powerful router for React",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
