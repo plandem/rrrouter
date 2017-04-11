@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Route from './route';
 import { routerSubPropName, routerPropName, matchedPropName } from './prop-types';
 

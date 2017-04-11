@@ -2,9 +2,24 @@ import pathToRegexp from 'path-to-regexp';
 
 class Path {
 	constructor(path, options) {
+		// console.log(pathToRegexp.parse(path, options));
+		// console.log(pathToRegexp(path, null, options));
+		//
+		// console.log(path);
+
+		// const regexp = pathToRegexp(path, options);
+		// path = pathToRegexp(path, null, options);
+		// console.log(path.keys);
+
+		// this.tokens = regexp.keys;
+		// this.regexp = regexp;
+
 		this.tokens = pathToRegexp.parse(path, options);
 		this.build = pathToRegexp.tokensToFunction(this.tokens);
 		this.regexp = pathToRegexp.tokensToRegExp(this.tokens, options || {});
+		//
+		// console.log(path, this.tokens, this.regexp);
+
 		this.test = (pathname) => this.regexp.test(pathname);
 	}
 
