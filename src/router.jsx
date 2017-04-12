@@ -98,7 +98,7 @@ class Router extends React.Component {
 			if(this.props.relative) {
 				const parent = this.context[routerPropName];
 				const parentRoute = parent.matchPath(path).next().value;
-				parentParams = parentRoute.params;
+				parentParams = parentRoute ? parentRoute.params : null;
 			}
 
 			this.listeners.forEach((r, id) => {
@@ -106,7 +106,7 @@ class Router extends React.Component {
 					const pathParams = r.matcher.match(path);
 					if (pathParams) {
 						matches.set(id, this.props.relative
-							? { relativePath: r.path, relativeParams: pathParams, path, params: Object.assign({}, parentParams, pathParams) }
+							? { path: r.path, params: pathParams, absolutePath: path, absoluteParams: Object.assign({}, parentParams, pathParams) }
 							: { path: r.path, params: pathParams }
 						);
 					}
