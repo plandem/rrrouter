@@ -103,9 +103,12 @@ class Router extends React.Component {
 
 			this.listeners.forEach((r, id) => {
 				if(r.matcher) {
-					const params = r.matcher.match(path);
-					if (params) {
-						matches.set(id, { path: r.path, pathParams: params, absolutePath: path, params: Object.assign({}, parentParams, params) });
+					const pathParams = r.matcher.match(path);
+					if (pathParams) {
+						matches.set(id, this.props.relative
+							? { relativePath: r.path, relativeParams: pathParams, path, params: Object.assign({}, parentParams, pathParams) }
+							: { path: r.path, params: pathParams) }
+						);
 					}
 				}
 			});
