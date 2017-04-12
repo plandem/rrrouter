@@ -107,7 +107,7 @@ class Router extends React.Component {
 					if (pathParams) {
 						matches.set(id, this.props.relative
 							? { relativePath: r.path, relativeParams: pathParams, path, params: Object.assign({}, parentParams, pathParams) }
-							: { path: r.path, params: pathParams) }
+							: { path: r.path, params: pathParams }
 						);
 					}
 				}
