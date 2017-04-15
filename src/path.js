@@ -2,23 +2,16 @@ import pathToRegexp from 'path-to-regexp';
 
 class Path {
 	constructor(path, options) {
-		// console.log(pathToRegexp.parse(path, options));
-		// console.log(pathToRegexp(path, null, options));
-		//
-		// console.log(path);
+		const tokens = pathToRegexp.parse(path, options);
+		this.build = pathToRegexp.tokensToFunction(tokens);
+		this.regexp = pathToRegexp.tokensToRegExp(tokens, options || {});
 
-		// const regexp = pathToRegexp(path, options);
-		// path = pathToRegexp(path, null, options);
-		// console.log(path.keys);
-
-		// this.tokens = regexp.keys;
-		// this.regexp = regexp;
-
-		this.tokens = pathToRegexp.parse(path, options);
-		this.build = pathToRegexp.tokensToFunction(this.tokens);
-		this.regexp = pathToRegexp.tokensToRegExp(this.tokens, options || {});
-		//
-		// console.log(path, this.tokens, this.regexp);
+		this.keys = [];
+		tokens.forEach((token, i) => {
+			if (typeof(token) !== 'string') {
+				this.keys.push(token);
+			}
+		});
 
 		this.test = (pathname) => this.regexp.test(pathname);
 	}
@@ -30,18 +23,16 @@ class Path {
 		}
 
 		const params = { };
-		this.tokens.forEach((token, i) => {
-			if(typeof(token) !== 'string') {
-				const param = matched[i];
-				if(typeof(param) !== 'undefined') {
-					try {
-						params[token.name] = decodeURIComponent(param);
-						if(token.repeat) {
-							params[token.name] = params[token.name].split(token.delimiter);
-						}
-					} catch(e) {
-						console.log(e);
+		this.keys.forEach((token, i) => {
+			const param = matched[i + 1];
+			if(typeof(param) !== 'undefined') {
+				try {
+					params[token.name] = decodeURIComponent(param);
+					if(token.repeat) {
+						params[token.name] = params[token.name].split(token.delimiter);
 					}
+				} catch(e) {
+					console.log(e);
 				}
 			}
 		});
