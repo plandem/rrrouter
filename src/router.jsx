@@ -22,11 +22,8 @@ class Router extends React.Component {
 
 				const parentRoute = parent.matchPath(currentPath).next().value;
 
-				//TODO: think more about that checking - actually, there is no any case when it can be possible.
-				invariant(parentRoute, 'Unhandled issue - parent of relative router has no any matches for current route.');
-
 				const wildcard = parentRoute.path.indexOf('*');
-				prefix = wildcard ? currentPath.substring(0, wildcard) : currentPath;
+				prefix = wildcard ? parentRoute.path.substring(0, wildcard) : parentRoute.path;
 				if(prefix[prefix.length - 1] === '/') {
 					prefix = prefix.slice(0, -1);
 				}
@@ -93,20 +90,12 @@ class Router extends React.Component {
 
 		const matches = new Map();
 		if(path) {
-			let parentParams = {};
-
-			if(this.props.relative) {
-				const parent = this.context[routerPropName];
-				const parentRoute = parent.matchPath(path).next().value;
-				parentParams = parentRoute ? parentRoute.params : null;
-			}
-
 			this.listeners.forEach((r, id) => {
 				if(r.matcher) {
 					const pathParams = r.matcher.match(path);
 					if (pathParams) {
 						matches.set(id, this.props.relative
-							? { path: r.path, params: pathParams, absolutePath: path, absoluteParams: Object.assign({}, parentParams, pathParams) }
+							? { path: this.prefix + r.path, params: pathParams}
 							: { path: r.path, params: pathParams }
 						);
 					}
