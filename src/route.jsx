@@ -24,25 +24,24 @@ class Route extends React.Component {
 		let result, callback;
 		const { handler } = this.props;
 
-		if (typeof(handler) === 'object') {
-			//React.element
-			callback = elementRender(handler);
-		} else {
-			if (handler.prototype && handler.prototype.isReactComponent) {
-				//extended class of React.Component
-				callback = classRender(handler);
-			} else {
-				//stateless component or plain JS function
-				callback = handler;
-			}
-		}
-
-		invariant(typeof(callback) === 'function', 'Could not resolve handler to render. Provide a valid \'handler\'.');
-
 		try {
+			if (typeof(handler) === 'object') {
+				//React.element
+				callback = elementRender(handler);
+			} else {
+				if (handler.prototype && handler.prototype.isReactComponent) {
+					//extended class of React.Component
+					callback = classRender(handler);
+				} else {
+					//stateless component or plain JS function
+					callback = handler;
+				}
+			}
+
+			invariant(typeof(callback) === 'function', 'Could not resolve handler to render. Provide a valid \'handler\'.');
 			result = callback(props);
 		} catch(e) {
-			invariant(false, e);
+			console.error(e);
 		}
 
 		return result || null;
